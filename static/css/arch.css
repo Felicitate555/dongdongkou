@@ -1,0 +1,101 @@
+.page h1 { margin: 0.5rem 0 0.45rem; font-size: clamp(1.8rem, 3vw, 2.45rem); }
+.page .lead { color: var(--muted); margin: 0 0 1.6rem; max-width: 66ch; font-size: 1rem; }
+.page h2 { margin: 2rem 0 0.85rem; font-size: 1.2rem; color: var(--cyan); }
+
+.mode-flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 1rem;
+}
+.flow-lane {
+  min-width: 0;
+  padding: 1.1rem 1.2rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #101723;
+}
+.flow-lane.flow-local { border-color: rgba(124, 58, 237, .38); }
+.flow-lane h2 { margin: 0 0 0.85rem; color: var(--text); font-size: 1.08rem; }
+.flow-node {
+  min-height: 58px;
+  display: grid;
+  align-items: center;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #151F2E;
+  color: #DCE6F3;
+  font-size: 0.9rem;
+}
+.flow-result { border-color: rgba(0, 229, 255, .42); color: #C9F2F4; }
+.flow-local .flow-result { border-color: rgba(167, 139, 250, .5); color: #E4DBFF; }
+.flow-arrow { height: 30px; display: grid; place-items: center; color: var(--muted); }
+.flow-lane .hint { color: var(--muted); }
+
+.arch-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 0.5rem;
+}
+.node {
+  flex: 1 1 200px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  min-width: 180px;
+}
+.node.user { border-color: rgba(0,229,255,.4); }
+.node.fe { border-color: rgba(124,58,237,.45); }
+.node.be { border-color: rgba(16,185,129,.4); }
+.node-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.node.user .node-title { color: var(--cyan); }
+.node.fe .node-title { color: #A78BFA; }
+.node.be .node-title { color: var(--ok); }
+.node ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.arrow {
+  display: grid;
+  place-items: center;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  min-width: 40px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+.seq {
+  background: #0a101c;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  color: #B6C2D9;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+@media (max-width: 700px) {
+  .arrow { transform: rotate(90deg); width: 100%; min-height: 24px; }
+  .mode-flow { grid-template-columns: 1fr; }
+  .flow-lane { padding: 0.9rem; }
+  .page { padding: 1rem 0.85rem; }
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>演示站 · 日常任务 · 动动口</title>
+  <link rel="icon" href="/assets/logo.svg?v=20261021-voice" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/demo.css" />
+<link rel="stylesheet" href="/css/assistant.css?v=20261021-sidebar"/>
+<link rel="stylesheet" href="/css/app-polish.css?v=20261021"/>
+</head>
+<body class="demo-body">
+  <header class="nav demo-nav">
+    <a class="nav-brand" href="/index.html"><img src="/assets/logo.svg?v=20261021-voice" alt="动动口" /><span>动动口 · 日常任务</span></a>
+    <nav class="nav-links">
+      <button class="nav-link" data-nav="home">首页</button>
+      <button class="nav-link" data-nav="console">工作台</button>
+      <button class="nav-link is-active" data-nav="demo">生活演示</button>
+      <button class="nav-link" data-nav="architecture">了解动动口</button>
+    </nav>
+    <div class="nav-right"><button class="btn btn-ghost btn-sm" id="account-open">登录/注册</button>
+      <button class="btn btn-ghost" id="btn-reset">重置场景</button>
+      <button class="btn btn-primary" data-nav="console">了解本机完整控制</button>
+    </div>
+  </header>
+
+  <div class="demo-page">
+    
+    <div class="demo-shell">
+      <div class="chrome">
+        <span class="traffic"><i></i><i></i><i></i></span>
+        <span class="url">https://demo.local / 动动口 · 日常任务台</span>
+      </div>
+
+      <div class="ds-head">
+        <div>
+          <h1>动动口 · 日常任务演示</h1>
+          <p>转头移动 · 张嘴直点 · 语音辅助。这里只操作当前网页。</p>
+        </div>
+        <div class="user-tag">模拟数据 · 不会真实下单或预约</div>
+      </div>
+
+      <div class="scene-tabs" id="scene-tabs" role="tablist" aria-label="场景"></div>
+
+      <div class="demo-cam-bar">
+        <button class="btn btn-primary" id="btn-demo-cam">在此页开启头控</button>
+        <button class="btn btn-ghost" id="btn-demo-mic">语音聆听</button>
+        <button class="btn btn-ghost" id="btn-page-up" data-click>向上翻页</button>
+        <button class="btn btn-primary" id="btn-page-down" data-click>向下翻页</button>
+        <span class="hint" id="demo-status" aria-live="polite">头控只作用于本演示页，也可直接用按钮和键盘操作。</span>
+        
+      </div>
+
+      <div class="demo-cam" id="demo-cam" hidden>
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay" width="320" height="240"></canvas>
+        <div class="vcursor demo-vcursor" id="vcursor" hidden></div>
+      </div>
+
+      <!-- 资讯 -->
+      <section class="step-panel is-active scene-panel" data-scene="browse" aria-label="看资讯">
+        <h2>示例资讯</h2>
+        <p class="hint">内容为模拟数据，展示头控浏览与打开详情。</p>
+        <div class="browse-list" id="browse-list"></div>
+        <article class="article card" id="article" hidden>
+          <h3 id="article-title"></h3>
+          <p id="article-body"></p>
+          <button class="btn btn-ghost" id="btn-back-news" data-click>返回列表</button>
+        </article>
+      </section>
+
+      <!-- 购物 -->
+      <section class="step-panel scene-panel" data-scene="shop" aria-label="模拟购物" hidden>
+        <h2>模拟购物</h2>
+        <p class="hint">页面内模拟加购与确认，不会创建真实订单；外部天猫链接会另开官网。</p>
+
+        <!-- 天猫入口 -->
+        <div class="tmall-entry card" id="tmall-entry">
+          <div class="tmall-brand" aria-hidden="true">
+            <svg class="tmall-logo" viewBox="0 0 64 64" width="56" height="56">
+              <rect x="2" y="2" width="60" height="60" rx="14" fill="#FF0036"/>
+              <path d="M18 22 L24 44 L32 30 L40 44 L46 22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="22" cy="16" r="4" fill="#FFD100"/>
+              <circle cx="42" cy="16" r="4" fill="#FFD100"/>
+            </svg>
+            <div class="tmall-title">
+              <strong>天猫风格购物演示</strong>
+              <span>模拟商品与购物流程 · 非官方接入 · 不会创建真实订单</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg tmall-go" id="btn-tmall-open" data-click>进入模拟购物页</button>
+          <button class="btn btn-ghost" id="btn-tmall-real" data-click>另开标签访问天猫官网</button>
+        </div>
+
+        <h3 class="shop-sub">本地模拟商品</h3>
+        <div class="goods-grid" id="goods-grid"></div>
+        <div class="cart card" id="cart-box">
+          <h3>购物车</h3>
+          <div id="cart-list">空</div>
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-shop-next" data-click>去结算</button>
+          </div>
+        </div>
+        <section class="step-panel" id="shop-confirm" hidden>
+          <h2>确认订单</h2>
+          <div class="summary card" id="shop-summary"></div>
+          <div class="actions">
+            <button class="btn btn-ghost" id="btn-shop-back" data-click>再看看</button>
+            <button class="btn btn-primary btn-lg" id="btn-shop-submit" data-click>提交订单</button>
+          </div>
+        </section>
+        <div class="success" id="shop-success" hidden>
+          <h2>购物流程演示完成</h2>
+          <p>本页没有创建订单或发起支付。</p>
+          <button class="btn btn-primary" id="btn-shop-again" data-click>再逛逛</button>
+        </div>
+      </section>
+
+      <!-- 天猫购物全屏壳（头控可进可退） -->
+      <div class="tmall-shell" id="tmall-shell" hidden role="dialog" aria-label="天猫购物">
+        <div class="tmall-chrome">
+          <span class="traffic"><i></i><i></i><i></i></span>
+          <span class="url">https://demo.local / 天猫购物 · 演示</span>
+          <button class="btn btn-primary tmall-close" id="btn-tmall-close" data-click>返回演示站</button>
+        </div>
+        <div class="tmall-body">
+          <header class="tmall-head">
+            <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+              <rect x="2" y="2" width="60" height="60" rx="14" fill="#FF0036"/>
+              <path d="M18 22 L24 44 L32 30 L40 44 L46 22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="tmall-search">搜索：保温杯 / 血压计 / 燕麦片</div>
+          </header>
+        <div class="tmall-banner">模拟店铺 · 免手浏览演示</div>
+          <div class="tmall-grid" id="tmall-grid"></div>
+          <div class="tmall-foot">
+            <button class="btn btn-ghost btn-lg" id="btn-tmall-back2" data-click>关闭页面，返回演示站</button>
+            <p class="hint">使用页面上的返回按钮；其他浏览器标签可用头控点击关闭。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预约（原挂号） -->
+      <section class="step-panel scene-panel" data-scene="clinic" aria-label="社区预约" hidden>
+        <h2>社区预约流程演示</h2>
+        <p class="hint">以下均为虚构示例，不会向医院提交信息或创建预约。</p>
+        <ol class="steps" id="steps">
+          <li class="is-active" data-s="1">选择科室</li>
+          <li data-s="2">选择医生与时间</li>
+          <li data-s="3">填写信息</li>
+          <li data-s="4">确认提交</li>
+          <li data-s="5">完成</li>
+        </ol>
+        <section class="step-panel is-active" data-panel="1">
+          <h2>请选择科室</h2>
+          <div class="dept-grid" id="dept-grid"></div>
+        </section>
+        <section class="step-panel" data-panel="2" hidden>
+          <h2>选择医生与时间</h2>
+          <div class="s2-grid">
+            <div class="doc-list" id="doc-list"></div>
+            <div class="slot-box">
+              <div class="day-tabs" id="day-tabs"></div>
+              <div class="slot-grid" id="slot-grid"></div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" id="btn-back-1" data-click>上一步</button>
+            <button class="btn btn-primary" id="btn-next-2" data-click>下一步</button>
+          </div>
+        </section>
+        <section class="step-panel" data-panel="3" hidden>
+          <h2>填写就诊人信息</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label for="f-name">姓名</label>
+              <input id="f-name" data-click placeholder="可留空 · 仅本页演示" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="f-id">身份证号</label>
+              <input id="f-id" data-click placeholder="可留空 · 不会提交" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="f-phone">手机号</label>
+              <input id="f-phone" data-click placeholder="可留空 · 不会提交" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="f-ins">医保类型</label>
+              <select id="f-ins" data-click>
+                <option>城镇职工医保</option>
+                <option>城乡居民医保</option>
+                <option>自费</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" id="btn-back-2" data-click>上一步</button>
+            <button class="btn btn-primary" id="btn-next-3" data-click>下一步</button>
+          </div>
+        </section>
+        <section class="step-panel" data-panel="4" hidden>
+          <h2>确认预约信息</h2>
+          <div class="summary card" id="summary"></div>
+          <div class="actions">
+            <button class="btn btn-ghost" id="btn-back-3" data-click>上一步</button>
+            <button class="btn btn-primary btn-lg" id="btn-submit" data-click>确认预约</button>
+          </div>
+        </section>
+        <section class="step-panel" data-panel="5" hidden>
+          <div class="success">
+            <div class="check">
+              <svg viewBox="0 0 64 64" width="72" height="72">
+                <circle cx="32" cy="32" r="30" class="ck-c" />
+                <path d="M18 33l10 10 18-20" class="ck-p" />
+              </svg>
+            </div>
+            <h2>预约流程演示完成</h2>
+            <p>这只是页面内的模拟结果，不代表真实预约。</p>
+            <div class="qr" id="qr" aria-label="模拟二维码"></div>
+            <p class="qr-code">模拟凭证码 · DEMO-0001</p>
+            <button class="btn btn-primary" id="btn-home" data-click>返回首页</button>
+          </div>
+        </section>
+      </section>
+    </div>
+  </div>
+
+  <nav class="tabbar" aria-label="主导航">
+    <button data-nav="home">首页</button>
+    <button data-nav="console">工作台</button>
+    <button class="is-active" data-nav="demo">演示</button>
+    <button data-nav="architecture">了解动动口</button>
+  </nav>
+
+  <script type="module" src="/js/demo.js"></script>
+<script type="module" src="/js/assistant-shell.js"></script>
+</body>
+</html>

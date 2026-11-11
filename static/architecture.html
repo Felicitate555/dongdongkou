@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>架构 · 动动口</title>
+  <link rel="icon" href="/assets/logo.svg?v=20261021-voice" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/arch.css" />
+<link rel="stylesheet" href="/css/assistant.css?v=20261021-sidebar"/>
+<link rel="stylesheet" href="/css/app-polish.css?v=20261021"/>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav-brand" href="/index.html"><img src="/assets/logo.svg?v=20261021-voice" alt="" /><span>动动口</span></a>
+    <nav class="nav-links">
+      <button class="nav-link" data-nav="home">首页</button>
+      <button class="nav-link" data-nav="console">工作台</button>
+      <button class="nav-link" data-nav="demo">生活演示</button>
+      <button class="nav-link is-active" data-nav="architecture">了解动动口</button>
+    </nav><div class="nav-right"><button class="btn btn-ghost btn-sm" id="account-open">登录/注册</button></div>
+  </header>
+
+  <main class="page about-page">
+    <h1>按自己的方式，使用电脑</h1>
+    <p class="lead">转头移动，张嘴点击。需要帮助时，口动助手就在身边。</p>
+    <section class="about-intro"><div><h2>动作简单，也可以做很多事</h2><p>坐在舒服的位置，平视片刻完成取中。轻轻转头移动光标，短张嘴点击；持续张嘴可以拖动，闭嘴松开。不必先锁定目标。</p><a class="btn btn-primary" href="/console.html">开始使用</a></div><img src="/assets/logo.svg?v=20261021-voice" alt="动动口标志"/></section>
+    <div class="about-options"><section><h2>在网页里，先轻松体验</h2><p>打开摄像头，就能尝试资讯浏览、模拟购物与预约。无需安装；网页演示只操作动动口页面。</p><a href="/demo.html">打开生活演示 ↗</a></section><section><h2>在自己的电脑上，继续往外走</h2><p>Windows 本机版可以在后台控制系统鼠标。打开悬浮窗后，摄像头预览和口动助手会陪你使用其他软件。</p><a href="/console.html">前往工作台 ↗</a></section></div>
+    <h2>你可能想知道</h2>
+    <div class="about-questions">
+    <details><summary>口动助手能帮我做什么？</summary><p>可以通过文字或语音聊天、解释使用方法，也可以在你主动截图后概括当前页面。它会给出建议，不会擅自替你购买、预约或发送消息。</p></details>
+    <details><summary>怎样让助手看看其他页面？</summary><p>打开任一页面左下方的口动助手，点击“看一下屏幕”。本机版获取当前屏幕；公网版由你选择要分享的窗口。检查预览后再发送，截图不会存入对话数据库。</p></details>
+    <details><summary>离开网页后，还能控制鼠标吗？</summary><p>在 Windows 本机工作台中打开“后台控制电脑”，完成取中后即可切换应用。本机服务需要保持运行；可以打开悬浮窗查看摄像头、继续对话。</p></details>
+    <details><summary>怎样暂停控制？</summary><p>本机后台控制可按全局 Esc、持续闭眼 1.2 秒，或移动实体鼠标停止。页面与悬浮窗也有暂停按钮。网页头控可以直接点“暂停”。</p></details>
+    <details><summary>摄像头和聊天会被保存吗？</summary><p>摄像头画面只在本机处理。游客对话不写入数据库；注册登录后保存文字对话，可在助手中清空。本机版与公网版的账号和记录分别保存。</p></details>
+    <details><summary>一定要说话或注册吗？</summary><p>不需要。你可以使用头控、页面按钮或文字输入；也可以直接以游客身份体验。</p></details>
+    </div>
+  </main>
+
+  <footer class="footer">2026 天猫AI黑客松 · 科技无碍 · 动动口</footer>
+
+  <nav class="tabbar">
+    <button data-nav="home">首页</button>
+    <button data-nav="console">工作台</button>
+    <button data-nav="demo">演示</button>
+    <button class="is-active" data-nav="architecture">了解动动口</button>
+  </nav>
+
+  <script type="module" src="/js/architecture.js"></script>
+<script type="module" src="/js/assistant-shell.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>动动口 · 免手工作台</title>
+<link rel="icon" href="/assets/logo.svg?v=20261021-voice" type="image/svg+xml"/>
+<link rel="stylesheet" href="/css/global.css"/><link rel="stylesheet" href="/css/console.css?v=20261021-sidebar"/>
+<link rel="stylesheet" href="/css/app-polish.css?v=20261021"/>
+</head>
+<body>
+<header class="nav">
+  <a class="nav-brand" href="/index.html"><img src="/assets/logo.svg?v=20261021-voice" alt=""/><span>动动口</span></a>
+  <nav class="nav-links" aria-label="主导航"><button class="nav-link" data-nav="home">首页</button><button class="nav-link is-active" data-nav="console">工作台</button><button class="nav-link" data-nav="demo">生活演示</button><button class="nav-link" data-nav="architecture">了解原理</button></nav>
+  <div class="nav-right"><span class="pill" id="mode-pill" hidden>页面内光标</span><button class="btn btn-danger btn-sm" id="btn-emergency-stop" hidden>立即停止 · Esc</button><button class="btn btn-ghost btn-sm" id="account-open">登录/注册</button></div>
+</header>
+<main class="console-layout">
+<aside class="side">
+  
+  <section class="panel camera-panel">
+    <h2>头控操作</h2><p class="connection-note" id="local-mode-state" hidden>正在连接服务…</p>
+    <div class="row"><button class="btn btn-primary" id="btn-cam-on">开启摄像头</button><button class="btn btn-ghost" id="btn-cam-off">暂停</button><button class="btn btn-ghost" id="btn-cal">取中</button></div>
+    <div class="load-box" id="cam-load" hidden><div class="load-bar"><i id="cam-load-ink"></i></div><p class="hint" id="cam-load-text" role="status">正在准备识别…</p><button class="btn btn-primary" id="btn-cam-retry" hidden>重新开始</button></div>
+    <p class="hint" id="cam-hint" role="status" hidden>视频留在本机，不上传。</p>
+    <div id="cam-fallback" hidden><button class="btn btn-ghost" data-nav="demo">先体验生活演示</button></div>
+    <p class="hint" id="cal-hint">开启后自然平视一秒即可。</p><span id="cal-count" hidden>3</span>
+  </section>
+  <section class="panel desktop-panel">
+    <button class="btn btn-ghost" id="btn-desktop" disabled>后台控制电脑</button>
+    <p class="hint" id="desktop-status" role="status">尚未开启</p>
+  </section>
+  <p class="gesture-help" id="gesture-hint">短张嘴点击 · 长张嘴拖动 · 闭嘴松开</p>
+  
+<section class="assistant" aria-label="口动 AI 助手">
+  <header class="assistant-head"><img src="/assets/logo.svg?v=20261021-voice" alt=""/><div><h2>口动助手</h2><button class="text-button" id="assistant-float" title="悬浮摄像头与助手">悬浮</button><p id="chat-state" hidden role="status">正在连接 MiMo…</p></div><label class="read-toggle"><input type="checkbox" id="tts-on" checked/>朗读回复</label></header>
+  <div class="assistant-tools"><button class="btn btn-ghost" id="btn-ai">看一下屏幕</button><button class="text-button" id="chat-clear">清空对话</button></div>
+  <p class="assistant-scope" hidden>可分析本网站的可见控件，不读取摄像头或输入内容。</p>
+  <div id="assistant-log" class="assistant-log" role="log" aria-live="polite" aria-relevant="additions text"></div>
+  <div class="assistant-suggestions"><button data-ask="第一次使用，我该怎么开始？">怎么开始使用</button><button data-ask="我想把动动口放在后台，控制其他软件，怎么做？">控制其他软件</button></div>
+  <p class="chat-error" id="chat-error" role="alert"></p>
+  <section class="screen-review" id="screen-review" hidden><img id="screen-shot" alt="本次准备发送的截图"/><p>确认截图中没有不想分享的内容，再发送给助手。</p><div class="row"><button class="btn btn-primary" id="screen-send">发送给助手</button><button class="text-button" id="screen-cancel">取消</button></div></section>
+<div class="voice-bubble" id="voice-bubble" role="status" aria-live="polite">说出问题，或直接输入。</div>
+  <div class="voice-actions"><button class="btn btn-primary" id="btn-mic">说话</button><button class="text-button" id="speech-stop" hidden>停止朗读</button></div>
+  <form id="chat-form" class="chat-compose"><label class="sr-only" for="assistant-input">给口动助手发消息</label><textarea id="assistant-input" placeholder="告诉我，你想做什么…" maxlength="2000" rows="2"></textarea><button class="btn btn-primary" id="chat-send" type="submit">发送</button></form>
+  <p class="chat-storage" id="chat-storage" hidden>游客模式 · 本次对话不保存</p><p class="assistant-privacy" hidden>文字发给 MiMo 生成回复；语音识别由浏览器提供。</p>
+</section><footer class="sidebar-footer"><button class="settings-open" id="settings-open" aria-label="设置"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 3-1 3-3 1 1 3-2 2 2 2-1 3 3 1 1 3h6l1-3 3-1-1-3 2-2-2-2 1-3-3-1-1-3Z"/><circle cx="12" cy="12" r="3"/></svg><span>设置</span></button><a href="/demo.html">生活演示 ↗</a></footer></aside>
+<section class="stage" id="stage" aria-label="头控预览">
+  <div class="preview-heading"><h2>摄像头预览</h2><span class="pill" id="model-pill" role="status">摄像头未开启</span></div>
+  <div class="status-bar" hidden><span id="sb-model">—</span><span id="sb-fps">—</span><span id="sb-lat">—</span><span id="sb-cur">—</span><span id="sb-jaw">—</span><span id="sb-lock">—</span><span id="sb-mouth">0</span><span id="sb-blink">0</span></div>
+  <div class="cam-wrap" id="cam-wrap"><img id="desktop-preview" alt="本机后台摄像头预览" hidden/><video id="video" playsinline muted></video><canvas id="overlay"></canvas>
+    <div class="cam-empty" id="cam-empty"><img src="/assets/logo.svg?v=20261021-voice" alt=""/><strong>从一个轻松的动作开始</strong><p>开启摄像头，保持自然坐姿。<br/>转头移动，张嘴点击。</p></div>
+    <div class="cal-overlay" id="cal-overlay" hidden><div class="cal-num" id="cal-num">3</div><div class="cal-text">保持自然平视</div></div>
+  </div>
+  <div class="vcursor" id="vcursor" hidden aria-hidden="true"></div>
+  <footer class="stage-foot">不必对准锁定，自由移动到你想点的地方。</footer>
+</section>
+
+</main>
+<aside class="ai-panel" id="ai-panel" hidden><header><strong>当前页面的可点目标</strong><button class="icon-btn" data-ai-close aria-label="关闭页面分析">×</button></header><div class="ai-shot"><img data-ai-shot alt="当前页面控件图" hidden/><div data-ai-shot-placeholder>分析后显示控件图</div></div><p class="hint" data-ai-meta></p><div class="ai-list" data-ai-list></div><p class="hint">选择目标会点击该位置；仍可直接转头移动。</p></aside>
+<div class="ai-loading" id="ai-loading" hidden><div class="spinner"></div><p>正在识别页面入口…</p></div>
+<dialog id="account-dialog" class="account-dialog" aria-labelledby="account-title"><button class="account-close" id="account-close" aria-label="关闭登录">×</button><img src="/assets/logo.svg?v=20261021-voice" alt=""/><h2 id="account-title">把对话留给下次的你</h2><p id="auth-current">无需登录也能使用全部体验；注册后保存对话。</p><div class="auth-tabs"><button data-auth-mode="login" aria-pressed="true">登录</button><button data-auth-mode="register" aria-pressed="false">注册</button></div><form id="auth-form"><label for="account-username">用户名</label><input id="account-username" autocomplete="username" minlength="2" maxlength="24" required placeholder="2–24 个汉字、字母、数字或下划线"/><label for="account-password">密码</label><input id="account-password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required placeholder="至少 8 位，无需手机号"/><p class="chat-error" id="auth-error" role="alert"></p><button class="btn btn-primary" id="auth-submit" type="submit">登录</button></form><button class="text-button" id="guest-use">先以游客体验</button><p class="account-privacy">注册后，账号和对话保存在动动口服务器。可在助手中清空对话。请勿发送密码等敏感信息。</p></dialog>
+<dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title"><header><h2 id="settings-title">设置</h2><button class="text-button" id="settings-close">完成</button></header><p class="hint" id="desktop-note"></p>  <details class="panel settings" open><summary>调整手感与更多设置</summary>
+    <div class="settings-content">
+      <label class="switch-row"><span>灵敏度 <b id="sens-val">1.2</b></span><input type="range" id="sens" aria-label="指针灵敏度" min="0.5" max="3" step="0.1" value="1.2"/></label>
+      <label class="switch-row"><span>平滑度 <b id="smooth-val">0.5</b></span><input type="range" id="smooth" aria-label="指针平滑度" min="0" max="1" step="0.05" value="0.5"/></label>
+      <label class="switch-row"><span>张嘴点击</span><input type="checkbox" id="mouth-on" checked/></label>
+      <label class="switch-row"><span>张嘴阈值 <b id="jaw-val">0.50</b></span><input type="range" id="jaw-th" aria-label="张嘴阈值" min="0.25" max="0.85" step="0.05" value="0.50"/></label>
+      <select id="cursor-mode" hidden aria-label="兼容模式"><option value="virtual">页面内光标</option><option value="system">前台系统光标</option></select>
+      <a href="#" class="link" id="btn-cal-reset">清除校准，重新取中</a>
+      <details class="tech-details"><summary>诊断信息</summary><div class="stat-grid">
+      <div>坐标 <code id="st-xy">0.50, 0.50</code></div><div>张嘴 <code id="st-jaw">—</code></div><div>选中 <code id="st-lock">—</code></div><div>点击 <code id="st-mouth">0</code></div>
+      <div>方向 <code id="st-pose">—</code></div><div>FPS <code id="st-fps">—</code></div><div>耗时 <code id="st-ms">—</code></div><div hidden id="st-blink">0</div><div hidden id="st-ear">—</div></div></details>
+    </div>
+  </details>
+  <details class="panel extra-tools" open><summary>滚动与操作指令</summary><div class="scroll-pad"><button class="btn btn-ghost" id="btn-scroll-up">向上翻页</button><div class="scroll-row"><button class="btn btn-ghost" id="btn-scroll-left">向左</button><button class="btn btn-ghost" id="btn-scroll-right">向右</button></div><button class="btn btn-ghost" id="btn-scroll-down">向下翻页</button></div><p class="hint">点助手的“说话”后，可以说“向下滚动”“点击”或“暂停控制”。</p></details>
+</dialog>
+<script type="module" src="/js/console.js"></script>
+</body></html>

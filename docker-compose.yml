@@ -1,0 +1,26 @@
+services:
+  dongdongkou:
+    build: .
+    image: dongdongkou:public
+    container_name: dongdongkou-public
+    restart: unless-stopped
+    environment:
+      DDK_DEPLOYMENT_MODE: public
+      DDK_HOST: 0.0.0.0
+      DDK_SYSTEM_CONTROL: "0"
+      DDK_ALLOWED_HOSTS: ${DDK_ALLOWED_HOSTS:-dongdongko.fun,localhost,127.0.0.1}
+      QWEN_API_KEY: ${QWEN_API_KEY:-}
+      DDK_DATA_DIR: /app/data
+    volumes:
+      - dongdongkou-data:/app/data
+    ports:
+      - "127.0.0.1:8787:8787"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/api/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  dongdongkou-data:

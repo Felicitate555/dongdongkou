@@ -1,0 +1,6 @@
+"""启动入口：python run.py"""
+
+from server.main import main
+
+if __name__ == "__main__":
+    main()
